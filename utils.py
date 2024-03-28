@@ -16,10 +16,10 @@ ordinal_columns = [
     "Alc", "Amphet", "Amyl", "Benzos", "Caff", "Can", "Choco", "Coke", "Crack",
     "Ecst", "Her", "Ket", "Leghighs", "LSD", "Meth", "Mush", "Nico", "Semeron", "VSA"
 ]
-colums_excluding_drug = [
- "Age", "Gender", "Edu", "Country", "Ethn", "Neuro", "Extr", "Open",
-    "Agree", "Consc", "Impul", "Sensat"
-]
+
+feature_columns = ["Age", "Gender", "Edu", "Country", "Ethn", "Neuro", "Extr", "Open", "Agree", "Consc", "Impul", "Sensat"]
+
+TARGET_DRUGS = ["Coke", "Her", "LSD", "Amphet", "Meth"]
 
 def prepcessing_data(df):
     '''
@@ -33,4 +33,9 @@ def prepcessing_data(df):
     # remove overclaimers
     df = df[df['Semeron'] == 0]
 
+    return df
+
+
+def transform_target(df, target_drugs, threshold=2):
+    df['target'] = df[target_drugs].gt(2).any(axis=1).astype(int)
     return df
